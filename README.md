@@ -8,4 +8,3 @@ Step 3: Goto ...\Data Management\Resoureces\Database\Exports. Now import that sq
 Step 4: Now Open Any Python Compiler And Run the Index.py file.
 
 -----------------------------------------------------------------------------------------------------------------
-https://dw.uptodown.net/d9f21be76024a40395ed2c27baa4347e1765facf3c46294de69bc8452fe04f17/android-studio-2022-3-1-19.exe
