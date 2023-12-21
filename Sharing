@@ -1,1428 +1,395 @@
-{% extends 'layout.html' %}
-{% load static %}
-{% block body %}
-<style>
-	.border-color-change-ok {
-		border-color: #80bdff;
-	}
-
-	.border-color-change-no {
-		border-color: #ff8080;
-	}
-
-	.book {
-		--color: #4ba2ff;
-		--duration: 6.8s;
-		width: 32px;
-		height: 12px;
-		position: relative;
-		margin: 32px 0 0 0;
-		zoom: 1.5;
-	}
-
-	.book .inner {
-		width: 32px;
-		height: 12px;
-		position: relative;
-		transform-origin: 2px 2px;
-		transform: rotateZ(-90deg);
-		animation: book var(--duration) ease infinite;
-	}
-
-	.book .inner .left,
-	.book .inner .right {
-		width: 60px;
-		height: 4px;
-		top: 0;
-		border-radius: 2px;
-		background: var(--color);
-		position: absolute;
-	}
-
-	.book .inner .left:before,
-	.book .inner .right:before {
-		content: "";
-		width: 48px;
-		height: 4px;
-		border-radius: 2px;
-		background: inherit;
-		position: absolute;
-		top: -10px;
-		left: 6px;
-	}
-
-	.book .inner .left {
-		right: 28px;
-		transform-origin: 58px 2px;
-		transform: rotateZ(90deg);
-		animation: left var(--duration) ease infinite;
-	}
-
-	.book .inner .right {
-		left: 28px;
-		transform-origin: 2px 2px;
-		transform: rotateZ(-90deg);
-		animation: right var(--duration) ease infinite;
-	}
-
-	.book .inner .middle {
-		width: 32px;
-		height: 12px;
-		border: 4px solid var(--color);
-		border-top: 0;
-		border-radius: 0 0 9px 9px;
-		transform: translateY(2px);
-	}
-
-	.book ul {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-		position: absolute;
-		left: 50%;
-		top: 0;
-	}
-
-	.book ul li {
-		height: 4px;
-		border-radius: 2px;
-		transform-origin: 100% 2px;
-		width: 48px;
-		right: 0;
-		top: -10px;
-		position: absolute;
-		background: var(--color);
-		transform: rotateZ(0deg) translateX(-18px);
-		animation-duration: var(--duration);
-		animation-timing-function: ease;
-		animation-iteration-count: infinite;
-	}
-
-	.book ul li:nth-child(0) {
-		animation-name: page-0;
-	}
-
-	.book ul li:nth-child(1) {
-		animation-name: page-1;
-	}
-
-	.book ul li:nth-child(2) {
-		animation-name: page-2;
-	}
-
-	.book ul li:nth-child(3) {
-		animation-name: page-3;
-	}
-
-	.book ul li:nth-child(4) {
-		animation-name: page-4;
-	}
-
-	.book ul li:nth-child(5) {
-		animation-name: page-5;
-	}
-
-	.book ul li:nth-child(6) {
-		animation-name: page-6;
-	}
-
-	.book ul li:nth-child(7) {
-		animation-name: page-7;
-	}
-
-	.book ul li:nth-child(8) {
-		animation-name: page-8;
-	}
-
-	.book ul li:nth-child(9) {
-		animation-name: page-9;
-	}
-
-	.book ul li:nth-child(10) {
-		animation-name: page-10;
-	}
-
-	.book ul li:nth-child(11) {
-		animation-name: page-11;
-	}
-
-	.book ul li:nth-child(12) {
-		animation-name: page-12;
-	}
-
-	.book ul li:nth-child(13) {
-		animation-name: page-13;
-	}
-
-	.book ul li:nth-child(14) {
-		animation-name: page-14;
-	}
-
-	.book ul li:nth-child(15) {
-		animation-name: page-15;
-	}
-
-	.book ul li:nth-child(16) {
-		animation-name: page-16;
-	}
-
-	.book ul li:nth-child(17) {
-		animation-name: page-17;
-	}
-
-	.book ul li:nth-child(18) {
-		animation-name: page-18;
-	}
-
-	@keyframes page-0 {
-		4% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		13%,
-		54% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		63% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes page-1 {
-		5.86% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		14.74%,
-		55.86% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		64.74% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes page-2 {
-		7.72% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		16.48%,
-		57.72% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		66.48% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes page-3 {
-		9.58% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		18.22%,
-		59.58% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		68.22% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes page-4 {
-		11.44% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		19.96%,
-		61.44% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		69.96% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes page-5 {
-		13.3% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		21.7%,
-		63.3% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		71.7% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes page-6 {
-		15.16% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		23.44%,
-		65.16% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		73.44% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes page-7 {
-		17.02% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		25.18%,
-		67.02% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		75.18% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes page-8 {
-		18.88% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		26.92%,
-		68.88% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		76.92% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes page-9 {
-		20.74% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		28.66%,
-		70.74% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		78.66% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes page-10 {
-		22.6% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		30.4%,
-		72.6% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		80.4% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes page-11 {
-		24.46% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		32.14%,
-		74.46% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		82.14% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes page-12 {
-		26.32% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		33.88%,
-		76.32% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		83.88% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes page-13 {
-		28.18% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		35.62%,
-		78.18% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		85.62% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes page-14 {
-		30.04% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		37.36%,
-		80.04% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		87.36% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes page-15 {
-		31.9% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		39.1%,
-		81.9% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		89.1% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes page-16 {
-		33.76% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		40.84%,
-		83.76% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		90.84% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes page-17 {
-		35.62% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		42.58%,
-		85.62% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		92.58% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes page-18 {
-		37.48% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-
-		44.32%,
-		87.48% {
-			transform: rotateZ(180deg) translateX(-18px);
-		}
-
-		94.32% {
-			transform: rotateZ(0deg) translateX(-18px);
-		}
-	}
-
-	@keyframes left {
-		4% {
-			transform: rotateZ(90deg);
-		}
-
-		10%,
-		40% {
-			transform: rotateZ(0deg);
-		}
-
-		46%,
-		54% {
-			transform: rotateZ(90deg);
-		}
-
-		60%,
-		90% {
-			transform: rotateZ(0deg);
-		}
-
-		96% {
-			transform: rotateZ(90deg);
-		}
-	}
-
-	@keyframes right {
-		4% {
-			transform: rotateZ(-90deg);
-		}
-
-		10%,
-		40% {
-			transform: rotateZ(0deg);
-		}
-
-		46%,
-		54% {
-			transform: rotateZ(-90deg);
-		}
-
-		60%,
-		90% {
-			transform: rotateZ(0deg);
-		}
-
-		96% {
-			transform: rotateZ(-90deg);
-		}
-	}
-
-	@keyframes book {
-		4% {
-			transform: rotateZ(-90deg);
-		}
-
-		10%,
-		40% {
-			transform: rotateZ(0deg);
-			transform-origin: 2px 2px;
-		}
-
-		40.01%,
-		59.99% {
-			transform-origin: 30px 2px;
-		}
-
-		46%,
-		54% {
-			transform: rotateZ(90deg);
-		}
-
-		60%,
-		90% {
-			transform: rotateZ(0deg);
-			transform-origin: 2px 2px;
-		}
-
-		96% {
-			transform: rotateZ(-90deg);
-		}
-	}
-</style>
-<div class="mobile-menu-overlay"></div>
-<div class="main-container">
-	<div class="min-height-100px">
-		<div class="card-box mb-10">
-			<div class="pb-20 pt-10 px-3">
-				<table class="table nowrap">
-					<thead>
-						<tr>
-							<!-- <th>
-								<div class="dt-checkbox">
-									<input type="checkbox" name="select_all" value="1" id="example-select-all" />
-									<span class="dt-checkbox-label"></span>
-								</div>
-							</th> -->
-							<th>Name</th>
-							<th>Position</th>
-							<th>Office</th>
-							<th>Start date</th>
-							<th>Salary</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<!-- <td></td> -->
-							<td>Tiger Nixon</td>
-							<td>System Architect</td>
-							<td>Tokyo</td>
-							<td>2008/11/28</td>
-							<td>$162,700</td>
-						</tr>
-						<tr>
-							<!-- <td></td> -->
-							<td>Angelica Ramos</td>
-							<td>Chief Executive Officer (CEO)</td>
-							<td>London</td>
-							<td>2009/10/09</td>
-							<td>$1,200,000</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-
-		<div class="row d-flex flex-wrap">
-			<div style="width: 56%; min-width: 500px;" class="mx-3">
-				<div class="card-box height-100-p px-2 pt-2">
-					<div class="justify-content-between align-items-center ">
-						<div class="form-group justify-content-end">
-							<form action="" id="input_form" onchange="resSubmit()" method="post" enctype="multipart/form-data">
-								{% csrf_token %}
-								<div class="custom-file">
-									<input type="file" id="fileInput" accept=".doc,.docx,.pdf" class="custom-file-input" name="file_input">
-									<label for="fileInput" class="custom-file-label">
-										{% if name != 'None' %}
-										{{name}}
-										{% else %}
-										Choose File
-										{% endif %}
-									</label>
-								</div>
-							</form>
-						</div>
-					</div>
-					{% if iframe and pdf %}
-					<iframe src="{% static 'Temp/HtmlFiles/PdfHtml.html' %}" id="bg-before1" class="boxx1"></iframe>
-					{% elif iframe and doc %}
-					<iframe src="{% static 'Temp/HtmlFiles/DocHtml.html' %}" id="bg-before2" class="boxx1"></iframe>
-					{% elif iframe and docx %}
-					<iframe src="{% static 'Temp/HtmlFiles/DocxHtml.html' %}" id="bg-before3" class="boxx1"></iframe>
-					{% elif err %}
-					<div class="w-100 h-100" id="bg-before4">
-						<img src="{% static 'vendors/images/err2.png' %}" width="100%" alt="">
-					</div>
-					{% else %}
-					<div class="w-100 h-100 d-block" id="bg-before5">
-						<img src="{% static 'src/images/Upload.jpg' %}" width="100%" alt="">
-					</div>
-					{% endif %}
-					<div class="w-100 h-100 d-none" id="bg-after" style="padding-top: 250px;">
-						<div class="book m-auto">
-							<div class="inner">
-								<div class="left"></div>
-								<div class="middle"></div>
-								<div class="right"></div>
-							</div>
-							<ul>
-								<li></li>
-								<li></li>
-								<li></li>
-								<li></li>
-								<li></li>
-								<li></li>
-								<li></li>
-								<li></li>
-								<li></li>
-								<li></li>
-								<li></li>
-								<li></li>
-								<li></li>
-								<li></li>
-								<li></li>
-								<li></li>
-								<li></li>
-								<li></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div style="width: 39%; min-width: 200px;" class="mr-3 ml-auto">
-				<div class="card height-100-p px-2 pt-2">
-					<h4 class="mb-2 mt-1 mr-auto ml-2">Candidate Information</h4>
-					<div class="d-flex boxx2 mt-3 mb-2">
-						<form class="p-3">
-							<div class="form-group row">
-								<label class="col-sm-10 col-md-5 col-form-label ">First Name</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control change-color-on-value" type="text" id="inputField1" class="drop-area" ondrop="dropHandler(event, 'inputField1')" ondragover="dragOverHandler(event)" placeholder="First Name" />
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-sm-12 col-md-5 col-form-label">Middle Name</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control change-color-on-value 	text-box" type="text" id="inputField2" class="drop-area" ondrop="dropHandler(event, 'inputField2')" ondragover="dragOverHandler(event)" placeholder="Middle Name" />
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-sm-12 col-md-5 col-form-label">Last Name</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control change-color-on-value" type="text" id="inputField3" class="drop-area" ondrop="dropHandler(event, 'inputField3')" ondragover="dragOverHandler(event)" placeholder="Last Name" />
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-sm-12 col-md-5 col-form-label">Date Of Birth</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control text-uppercase change-color-on-value date-picker" id="date-input" ondrop="handleDrop(event)" ondragover="allowDrop(event)" readonly placeholder="DD/MM/YYYY" />
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-sm-12 col-md-5 col-form-label">Address</label>
-								<div class="col-sm-12 col-md-7">
-									<textarea class="form-control change-color-on-value" id="inputField5" class="drop-area" ondrop="dropHandler(event, 'inputField5')" ondragover="dragOverHandler(event)" placeholder="Address"></textarea>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-sm-10 col-md-5 col-form-label">Location</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control change-color-on-value" type="text" id="inputField20" class="drop-area" ondrop="dropHandler(event, 'inputField20')" ondragover="dragOverHandler(event)" placeholder="Location" />
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-sm-10 col-md-5 col-form-label">State</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control change-color-on-value" type="text" id="inputField6" class="drop-area" ondrop="dropHandler(event, 'inputField6')" ondragover="dragOverHandler(event)" placeholder="State" />
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-sm-10 col-md-5 col-form-label">Pincode</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control change-color-on-value" type="text" id="inputField21" class="drop-area" ondrop="dropHandler(event, 'inputField21')" ondragover="dragOverHandler(event)" placeholder="Pincode" />
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-sm-12 col-md-5 col-form-label">Email</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control change-color-on-value" id="inputField7" class="drop-area" ondrop="dropHandler(event, 'inputField7')" ondragover="dragOverHandler(event)" placeholder="Email" type="email" />
-								</div>
-							</div>
-
-							<div class="form-group row">
-								<label class="col-sm-12 col-md-5 col-form-label">Telephone</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control change-color-on-value" id="inputField8" class="drop-area" ondrop="dropHandler(event, 'inputField8')" ondragover="dragOverHandler(event)" placeholder="Telephone" type="tel" />
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-sm-12 col-md-5 col-form-label">Mobile</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control change-color-on-value" id="inputField9" class="drop-area" ondrop="dropHandler(event, 'inputField9')" ondragover="dragOverHandler(event)" placeholder="Mobile" type="tel" />
-								</div>
-							</div>
-							<span class="h5 mb-0 mt-3 "> Educational Information </span>
-							<div class="form-group row mt-4">
-								<label class="col-sm-10 col-md-5 col-form-label">Degree</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control change-color-on-value " type="text" id="inputField10" class="drop-area" ondrop="dropHandler(event, 'inputField10')" ondragover="dragOverHandler(event)" placeholder="Degree" />
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-sm-12 col-md-5 col-form-label">Discipline</label>
-								<div class="col-sm-12 col-md-7">
-									<select class="custom-select col-12">
-										<option selected="">Select</option>
-										<option value="1">B.E MECH</option>
-										<option value="2">B.E EEE</option>
-										<option value="3">B.E CSE</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group row mt-1">
-								<label class="col-sm-10 col-md-5 col-form-label">Percentage</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control change-color-on-value " type="text" id="inputField11" class="drop-area" ondrop="dropHandler(event, 'inputField11')" ondragover="dragOverHandler(event)" placeholder="Percentage" />
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-sm-12 col-md-5 col-form-label">Year of Pass</label>
-								<div class="col-sm-12 col-md-7">
-									<select class="custom-select col-12">
-										<option selected="">Year</option>
-										<option value="1">2020</option>
-										<option value="2">2021</option>
-										<option value="3">2022</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group row mt-1">
-								<label class="col-sm-10 col-md-5 col-form-label">Institute</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control change-color-on-value " type="text" id="inputField12" class="drop-area" ondrop="dropHandler(event, 'inputField12')" ondragover="dragOverHandler(event)" placeholder="Institute" />
-								</div>
-							</div>
-							<span class="h5 mb-0 mt-3 "> Organization Information </span>
-							<div class="form-group row mt-4">
-								<label class="col-sm-10 col-md-4 col-form-label">Experience</label>
-								<div class="col-sm-12 col-md-6 d-flex ml-3">
-									<span class="col-sm-12 col-md-10">
-										<select class="custom-select col-12">
-											<option selected="">Month</option>
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-										</select>
-									</span>
-									<span class="col-sm-12 col-md-10">
-										<select class="custom-select col-12">
-											<option selected="">Year</option>
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-										</select>
-									</span>
-								</div>
-							</div>
-							<div class="form-group row mt-4">
-								<label class="col-sm-10 col-md-5 col-form-label">Organization</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control change-color-on-value " type="text" id="inputField13" class="drop-area" ondrop="dropHandler(event, 'inputField13')" ondragover="dragOverHandler(event)" placeholder="Organization" />
-								</div>
-							</div>
-
-							<div class="form-group row mt-4">
-								<label class="col-sm-10 col-md-4 col-form-label">From</label>
-								<div class="col-sm-12 col-md-6 d-flex ml-3">
-									<span class="col-sm-12 col-md-10">
-										<select class="custom-select col-12">
-											<option selected="">Month</option>
-											<option value="1">Jan</option>
-											<option value="2">Feb</option>
-											<option value="3">Mar</option>
-										</select>
-									</span>
-									<span class="col-sm-12 col-md-10">
-										<select class="custom-select col-12">
-											<option selected="">Year</option>
-											<option value="1">2020</option>
-											<option value="2">2021</option>
-											<option value="3">2022</option>
-										</select>
-									</span>
-								</div>
-							</div>
-
-							<div class="form-group row mt-4">
-								<label class="col-sm-10 col-md-4 col-form-label">To</label>
-								<div class="col-sm-12 col-md-6 d-flex ml-3">
-									<span class="col-sm-12 col-md-10">
-										<select class="custom-select col-12">
-											<option selected="">Month</option>
-											<option value="1">Jan</option>
-											<option value="2">Feb</option>
-											<option value="3">Mar</option>
-										</select>
-									</span>
-									<span class="col-sm-12 col-md-10">
-										<select class="custom-select col-12">
-											<option selected="">Year</option>
-											<option value="1">2020</option>
-											<option value="2">2021</option>
-											<option value="3">2022</option>
-										</select>
-									</span>
-								</div>
-							</div>
-							<div class="form-group row mt-4">
-								<label class="col-sm-10 col-md-5 col-form-label">Roles</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control change-color-on-value " type="text" id="inputField14" class="drop-area" ondrop="dropHandler(event, 'inputField14')" ondragover="dragOverHandler(event)" placeholder="Roles" />
-								</div>
-							</div>
-							<span class="h5 mb-0 mt-3 "> Technology Information </span>
-							<div class="form-group row mt-4">
-								<label class="col-sm-10 col-md-5 col-form-label">Technology</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control change-color-on-value " type="text" id="inputField15" class="drop-area" ondrop="dropHandler(event, 'inputField15')" ondragover="dragOverHandler(event)" placeholder="Technology" />
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-sm-12 col-md-5 col-form-label">Skills</label>
-								<div class="col-sm-12 col-md-7">
-									<textarea class="form-control change-color-on-value" id="inputField16" class="drop-area" ondrop="dropHandler(event, 'inputField16')" ondragover="dragOverHandler(event)" placeholder="Skills"></textarea>
-								</div>
-							</div>
-							<div class="form-group row mt-4">
-								<label class="col-sm-10 col-md-5 col-form-label">Domain</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control change-color-on-value " type="text" id="inputField17" class="drop-area" ondrop="dropHandler(event, 'inputField17')" ondragover="dragOverHandler(event)" placeholder="Domain" />
-								</div>
-							</div>
-							<div class="form-group row mt-4">
-								<label class="col-sm-10 col-md-5 col-form-label">Certifications</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control change-color-on-value " type="text" id="inputField18" class="drop-area" ondrop="dropHandler(event, 'inputField18')" ondragover="dragOverHandler(event)" placeholder="Certifications" />
-								</div>
-							</div>
-							<div class="form-group row mt-4 ">
-								<label class="col-sm-10 col-md-5 col-form-label">Exams</label>
-								<div class="col-sm-12 col-md-7">
-									<input class="form-control change-color-on-value mb-5" type="text" id="inputField19" class="drop-area" ondrop="dropHandler(event, 'inputField19')" ondragover="dragOverHandler(event)" placeholder="Exams" />
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<script src="{% static 'src\moment.js' %}"></script>
-<script>
-	function resSubmit() {
-		"{% if iframe and pdf %}"
-		document.getElementById("bg-before1").classList.remove("d-block");
-		document.getElementById("bg-before1").classList.add("d-none");
-		"{% elif iframe and doc %}"
-		document.getElementById("bg-before2").classList.remove("d-block");
-		document.getElementById("bg-before2").classList.add("d-none");
-		"{% elif iframe and docx %}"
-		document.getElementById("bg-before3").classList.remove("d-block");
-		document.getElementById("bg-before3").classList.add("d-none");
-		"{% elif err %}"
-		document.getElementById("bg-before4").classList.remove("d-block");
-		document.getElementById("bg-before4").classList.add("d-none");
-		"{% else %}"
-		document.getElementById("bg-before5").classList.remove("d-block");
-		document.getElementById("bg-before5").classList.add("d-none");
-		"{% endif %}"
-		document.getElementById("bg-after").classList.remove("d-none");
-		document.getElementById("bg-after").classList.add("d-block");
-
-		document.getElementById("input_form").submit();
-	}
-	var inputElements = document.querySelectorAll('.change-color-on-value');
-
-	// Add an event listener to each input field
-	inputElements.forEach(function (inputElement) {
-		inputElement.addEventListener('input', function () {
-			// Check if the input field has a value
-			if (inputElement.value.trim() !== '') {
-				// If it has a value, add the 'filled' class to change the color
-				inputElement.classList.add('border-color-change-ok');
-				inputElement.classList.remove('border-color-change-no');
-			} else {
-				// If it doesn't have a value, remove the 'filled' class
-				inputElement.classList.add('border-color-change-no');
-				inputElement.classList.remove('border-color-change-ok');
-			}
-		});
-	});
-	function dropHandler(event, inputId) {
-		event.preventDefault();
-		var data = event.dataTransfer.getData("text").trim();
-		var inputField = document.getElementById(inputId);
-
-		if (inputField.value.length > 0) {
-			inputField.value += ', ' + data;
-		} else {
-			inputField.value = data;
-		}
-	}
-	function allowDrop(event) {
-		event.preventDefault();
-	}
-
-
-
-
-	function handleDrop(event) {
-		event.preventDefault();
-		const dateString = event.dataTransfer.getData('text').trim();
-		const dateInput = document.getElementById('date-input');
-		if (moment(dateString, "YYYY-MM-DD").isValid() && (moment(dateString, "YYYY-MM-DD").format("YYYY-MM-DD").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YYYY-MM-DD")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD-MM-YYYY").isValid() && (moment(dateString, "DD-MM-YYYY").format("DD-MM-YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD-MM-YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MM-DD-YYYY").isValid() && (moment(dateString, "MM-DD-YYYY").format("MM-DD-YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MM-DD-YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YYYY-DD-MM").isValid() && (moment(dateString, "YYYY-DD-MM").format("YYYY-DD-MM").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YYYY-DD-MM")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD MMMM YYYY").isValid() && (moment(dateString, "DD MMMM YYYY").format("DD MMMM YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD MMMM YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD MMM YYYY").isValid() && (moment(dateString, "DD MMM YYYY").format("DD MMM YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD MMM YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM D, YYYY").isValid() && (moment(dateString, "MMM D, YYYY").format("MMM D, YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM D, YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM DD, YYYY").isValid() && (moment(dateString, "MMM DD, YYYY").format("MMM DD, YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM DD, YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM D, YYYY").isValid() && (moment(dateString, "MMMM D, YYYY").format("MMMM D, YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM D, YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM DD, YYYY").isValid() && (moment(dateString, "MMMM DD, YYYY").format("MMMM DD, YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM DD, YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD-MMMM-YYYY").isValid() && (moment(dateString, "DD-MMMM-YYYY").format("DD-MMMM-YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD-MMMM-YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD-MMM-YYYY").isValid() && (moment(dateString, "DD-MMM-YYYY").format("DD-MMM-YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD-MMM-YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM-D-YYYY").isValid() && (moment(dateString, "MMM-D-YYYY").format("MMM-D-YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM-D-YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM-DD-YYYY").isValid() && (moment(dateString, "MMM-DD-YYYY").format("MMM-DD-YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM-DD-YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM-D-YYYY").isValid() && (moment(dateString, "MMMM-D-YYYY").format("MMMM-D-YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM-D-YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM-DD-YYYY").isValid() && (moment(dateString, "MMMM-DD-YYYY").format("MMMM-DD-YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM-DD-YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YYYY/MM/DD").isValid() && (moment(dateString, "YYYY/MM/DD").format("YYYY/MM/DD").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YYYY/MM/DD")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD/MM/YYYY").isValid() && (moment(dateString, "DD/MM/YYYY").format("DD/MM/YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD/MM/YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MM/DD/YYYY").isValid() && (moment(dateString, "MM/DD/YYYY").format("MM/DD/YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MM/DD/YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YYYY/DD/MM").isValid() && (moment(dateString, "YYYY/DD/MM").format("YYYY/DD/MM").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YYYY/DD/MM")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD/MMMM/YYYY").isValid() && (moment(dateString, "DD/MMMM/YYYY").format("DD/MMMM/YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD/MMMM/YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD/MMM/YYYY").isValid() && (moment(dateString, "DD/MMM/YYYY").format("DD/MMM/YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD/MMM/YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM/D/YYYY").isValid() && (moment(dateString, "MMM/D/YYYY").format("MMM/D/YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM/D/YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM/DD/YYYY").isValid() && (moment(dateString, "MMM/DD/YYYY").format("MMM/DD/YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM/DD/YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM/D/YYYY").isValid() && (moment(dateString, "MMMM/D/YYYY").format("MMMM/D/YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM/D/YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM/DD/YYYY").isValid() && (moment(dateString, "MMMM/DD/YYYY").format("MMMM/DD/YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM/DD/YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YY-MM-DD").isValid() && (moment(dateString, "YY-MM-DD").format("YY-MM-DD").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YY-MM-DD")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD-MM-YY").isValid() && (moment(dateString, "DD-MM-YY").format("DD-MM-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD-MM-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MM-DD-YY").isValid() && (moment(dateString, "MM-DD-YY").format("MM-DD-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MM-DD-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YY-DD-MM").isValid() && (moment(dateString, "YY-DD-MM").format("YY-DD-MM").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YY-DD-MM")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD MMMM YY").isValid() && (moment(dateString, "DD MMMM YY").format("DD MMMM YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD MMMM YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD MMM YY").isValid() && (moment(dateString, "DD MMM YY").format("DD MMM YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD MMM YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD MMM YY").isValid() && (moment(dateString, "DD MMM YY").format("DD MMM YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD MMM YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM D, YY").isValid() && (moment(dateString, "MMM D, YY").format("MMM D, YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM D, YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM D, YY").isValid() && (moment(dateString, "MMM D, YY").format("MMM D, YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM D, YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM DD, YY").isValid() && (moment(dateString, "MMM DD, YY").format("MMM DD, YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM DD, YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM D, YY").isValid() && (moment(dateString, "MMMM D, YY").format("MMMM D, YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM D, YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM DD, YY").isValid() && (moment(dateString, "MMMM DD, YY").format("MMMM DD, YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM DD, YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD-MMMM-YY").isValid() && (moment(dateString, "DD-MMMM-YY").format("DD-MMMM-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD-MMMM-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD-MMM-YY").isValid() && (moment(dateString, "DD-MMM-YY").format("DD-MMM-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD-MMM-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD-MMM-YY").isValid() && (moment(dateString, "DD-MMM-YY").format("DD-MMM-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD-MMM-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM-D-YY").isValid() && (moment(dateString, "MMM-D-YY").format("MMM-D-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM-D-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM-D-YY").isValid() && (moment(dateString, "MMM-D-YY").format("MMM-D-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM-D-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM-DD-YY").isValid() && (moment(dateString, "MMM-DD-YY").format("MMM-DD-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM-DD-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM-D-YY").isValid() && (moment(dateString, "MMMM-D-YY").format("MMMM-D-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM-D-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM-DD-YY").isValid() && (moment(dateString, "MMMM-DD-YY").format("MMMM-DD-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM-DD-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YY/MM/DD").isValid() && (moment(dateString, "YY/MM/DD").format("YY/MM/DD").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YY/MM/DD")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD/MM/YY").isValid() && (moment(dateString, "DD/MM/YY").format("DD/MM/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD/MM/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MM/DD/YY").isValid() && (moment(dateString, "MM/DD/YY").format("MM/DD/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MM/DD/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YY/DD/MM").isValid() && (moment(dateString, "YY/DD/MM").format("YY/DD/MM").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YY/DD/MM")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD/MMMM/YY").isValid() && (moment(dateString, "DD/MMMM/YY").format("DD/MMMM/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD/MMMM/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD/MMM/YY").isValid() && (moment(dateString, "DD/MMM/YY").format("DD/MMM/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD/MMM/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD/MMM/YY").isValid() && (moment(dateString, "DD/MMM/YY").format("DD/MMM/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD/MMM/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM/D/YY").isValid() && (moment(dateString, "MMM/D/YY").format("MMM/D/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM/D/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM/D/YY").isValid() && (moment(dateString, "MMM/D/YY").format("MMM/D/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM/D/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM/DD/YY").isValid() && (moment(dateString, "MMM/DD/YY").format("MMM/DD/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM/DD/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM/D/YY").isValid() && (moment(dateString, "MMMM/D/YY").format("MMMM/D/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM/D/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM/DD/YY").isValid() && (moment(dateString, "MMMM/DD/YY").format("MMMM/DD/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM/DD/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YY-MM-DD").isValid() && (moment(dateString, "YY-MM-DD").format("YY-MM-DD").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YY-MM-DD")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD-MM-YY").isValid() && (moment(dateString, "DD-MM-YY").format("DD-MM-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD-MM-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MM-DD-YY").isValid() && (moment(dateString, "MM-DD-YY").format("MM-DD-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MM-DD-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YY-DD-MM").isValid() && (moment(dateString, "YY-DD-MM").format("YY-DD-MM").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YY-DD-MM")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD MMMM YY").isValid() && (moment(dateString, "DD MMMM YY").format("DD MMMM YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD MMMM YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD MMM YY").isValid() && (moment(dateString, "DD MMM YY").format("DD MMM YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD MMM YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD MMM YY").isValid() && (moment(dateString, "DD MMM YY").format("DD MMM YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD MMM YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM D, YY").isValid() && (moment(dateString, "MMM D, YY").format("MMM D, YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM D, YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM D, YY").isValid() && (moment(dateString, "MMM D, YY").format("MMM D, YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM D, YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM DD, YY").isValid() && (moment(dateString, "MMM DD, YY").format("MMM DD, YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM DD, YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM D, YY").isValid() && (moment(dateString, "MMMM D, YY").format("MMMM D, YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM D, YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM DD, YY").isValid() && (moment(dateString, "MMMM DD, YY").format("MMMM DD, YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM DD, YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD-MMMM-YY").isValid() && (moment(dateString, "DD-MMMM-YY").format("DD-MMMM-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD-MMMM-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD-MMM-YY").isValid() && (moment(dateString, "DD-MMM-YY").format("DD-MMM-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD-MMM-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD-MMM-YY").isValid() && (moment(dateString, "DD-MMM-YY").format("DD-MMM-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD-MMM-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM-D-YY").isValid() && (moment(dateString, "MMM-D-YY").format("MMM-D-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM-D-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM-D-YY").isValid() && (moment(dateString, "MMM-D-YY").format("MMM-D-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM-D-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM-DD-YY").isValid() && (moment(dateString, "MMM-DD-YY").format("MMM-DD-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM-DD-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM-D-YY").isValid() && (moment(dateString, "MMMM-D-YY").format("MMMM-D-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM-D-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM-DD-YY").isValid() && (moment(dateString, "MMMM-DD-YY").format("MMMM-DD-YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM-DD-YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YY/MM/DD").isValid() && (moment(dateString, "YY/MM/DD").format("YY/MM/DD").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YY/MM/DD")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD/MM/YY").isValid() && (moment(dateString, "DD/MM/YY").format("DD/MM/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD/MM/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MM/DD/YY").isValid() && (moment(dateString, "MM/DD/YY").format("MM/DD/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MM/DD/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YY/DD/MM").isValid() && (moment(dateString, "YY/DD/MM").format("YY/DD/MM").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YY/DD/MM")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD/MMMM/YY").isValid() && (moment(dateString, "DD/MMMM/YY").format("DD/MMMM/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD/MMMM/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD/MMM/YY").isValid() && (moment(dateString, "DD/MMM/YY").format("DD/MMM/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD/MMM/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD/MMM/YY").isValid() && (moment(dateString, "DD/MMM/YY").format("DD/MMM/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD/MMM/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM/D/YY").isValid() && (moment(dateString, "MMM/D/YY").format("MMM/D/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM/D/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM/D/YY").isValid() && (moment(dateString, "MMM/D/YY").format("MMM/D/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM/D/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM/DD/YY").isValid() && (moment(dateString, "MMM/DD/YY").format("MMM/DD/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM/DD/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM/D/YY").isValid() && (moment(dateString, "MMMM/D/YY").format("MMMM/D/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM/D/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM/DD/YY").isValid() && (moment(dateString, "MMMM/DD/YY").format("MMMM/DD/YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM/DD/YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YYYY.MM.DD").isValid() && (moment(dateString, "YYYY.MM.DD").format("YYYY.MM.DD").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YYYY.MM.DD")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MM.YYYY").isValid() && (moment(dateString, "DD.MM.YYYY").format("DD.MM.YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MM.YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MM.DD.YYYY").isValid() && (moment(dateString, "MM.DD.YYYY").format("MM.DD.YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MM.DD.YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YYYY.DD.MM").isValid() && (moment(dateString, "YYYY.DD.MM").format("YYYY.DD.MM").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YYYY.DD.MM")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MMMM.YYYY").isValid() && (moment(dateString, "DD.MMMM.YYYY").format("DD.MMMM.YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MMMM.YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MMM.YYYY").isValid() && (moment(dateString, "DD.MMM.YYYY").format("DD.MMM.YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MMM.YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM.D.YYYY").isValid() && (moment(dateString, "MMM.D.YYYY").format("MMM.D.YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM.D.YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM.DD.YYYY").isValid() && (moment(dateString, "MMM.DD.YYYY").format("MMM.DD.YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM.DD.YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM.D.YYYY").isValid() && (moment(dateString, "MMMM.D.YYYY").format("MMMM.D.YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM.D.YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM.DD.YYYY").isValid() && (moment(dateString, "MMMM.DD.YYYY").format("MMMM.DD.YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM.DD.YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YYYY.MM.DD").isValid() && (moment(dateString, "YYYY.MM.DD").format("YYYY.MM.DD").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YYYY.MM.DD")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MM.YYYY").isValid() && (moment(dateString, "DD.MM.YYYY").format("DD.MM.YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MM.YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MM.DD.YYYY").isValid() && (moment(dateString, "MM.DD.YYYY").format("MM.DD.YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MM.DD.YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YYYY.DD.MM").isValid() && (moment(dateString, "YYYY.DD.MM").format("YYYY.DD.MM").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YYYY.DD.MM")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MMMM.YYYY").isValid() && (moment(dateString, "DD.MMMM.YYYY").format("DD.MMMM.YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MMMM.YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MMM.YYYY").isValid() && (moment(dateString, "DD.MMM.YYYY").format("DD.MMM.YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MMM.YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM.D.YYYY").isValid() && (moment(dateString, "MMM.D.YYYY").format("MMM.D.YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM.D.YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM.DD.YYYY").isValid() && (moment(dateString, "MMM.DD.YYYY").format("MMM.DD.YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM.DD.YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM.D.YYYY").isValid() && (moment(dateString, "MMMM.D.YYYY").format("MMMM.D.YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM.D.YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM.DD.YYYY").isValid() && (moment(dateString, "MMMM.DD.YYYY").format("MMMM.DD.YYYY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM.DD.YYYY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YY.MM.DD").isValid() && (moment(dateString, "YY.MM.DD").format("YY.MM.DD").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YY.MM.DD")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MM.YY").isValid() && (moment(dateString, "DD.MM.YY").format("DD.MM.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MM.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MM.DD.YY").isValid() && (moment(dateString, "MM.DD.YY").format("MM.DD.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MM.DD.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YY.DD.MM").isValid() && (moment(dateString, "YY.DD.MM").format("YY.DD.MM").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YY.DD.MM")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MMMM.YY").isValid() && (moment(dateString, "DD.MMMM.YY").format("DD.MMMM.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MMMM.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MMM.YY").isValid() && (moment(dateString, "DD.MMM.YY").format("DD.MMM.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MMM.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MMM.YY").isValid() && (moment(dateString, "DD.MMM.YY").format("DD.MMM.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MMM.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM.D.YY").isValid() && (moment(dateString, "MMM.D.YY").format("MMM.D.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM.D.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM.D.YY").isValid() && (moment(dateString, "MMM.D.YY").format("MMM.D.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM.D.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM.DD.YY").isValid() && (moment(dateString, "MMM.DD.YY").format("MMM.DD.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM.DD.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM.D.YY").isValid() && (moment(dateString, "MMMM.D.YY").format("MMMM.D.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM.D.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM.DD.YY").isValid() && (moment(dateString, "MMMM.DD.YY").format("MMMM.DD.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM.DD.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YY.MM.DD").isValid() && (moment(dateString, "YY.MM.DD").format("YY.MM.DD").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YY.MM.DD")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MM.YY").isValid() && (moment(dateString, "DD.MM.YY").format("DD.MM.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MM.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MM.DD.YY").isValid() && (moment(dateString, "MM.DD.YY").format("MM.DD.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MM.DD.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YY.DD.MM").isValid() && (moment(dateString, "YY.DD.MM").format("YY.DD.MM").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YY.DD.MM")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MMMM.YY").isValid() && (moment(dateString, "DD.MMMM.YY").format("DD.MMMM.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MMMM.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MMM.YY").isValid() && (moment(dateString, "DD.MMM.YY").format("DD.MMM.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MMM.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MMM.YY").isValid() && (moment(dateString, "DD.MMM.YY").format("DD.MMM.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MMM.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM.D.YY").isValid() && (moment(dateString, "MMM.D.YY").format("MMM.D.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM.D.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM.D.YY").isValid() && (moment(dateString, "MMM.D.YY").format("MMM.D.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM.D.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM.DD.YY").isValid() && (moment(dateString, "MMM.DD.YY").format("MMM.DD.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM.DD.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM.D.YY").isValid() && (moment(dateString, "MMMM.D.YY").format("MMMM.D.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM.D.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM.DD.YY").isValid() && (moment(dateString, "MMMM.DD.YY").format("MMMM.DD.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM.DD.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YY.MM.DD").isValid() && (moment(dateString, "YY.MM.DD").format("YY.MM.DD").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YY.MM.DD")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MM.YY").isValid() && (moment(dateString, "DD.MM.YY").format("DD.MM.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MM.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MM.DD.YY").isValid() && (moment(dateString, "MM.DD.YY").format("MM.DD.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MM.DD.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YY.DD.MM").isValid() && (moment(dateString, "YY.DD.MM").format("YY.DD.MM").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YY.DD.MM")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MMMM.YY").isValid() && (moment(dateString, "DD.MMMM.YY").format("DD.MMMM.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MMMM.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MMM.YY").isValid() && (moment(dateString, "DD.MMM.YY").format("DD.MMM.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MMM.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MMM.YY").isValid() && (moment(dateString, "DD.MMM.YY").format("DD.MMM.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MMM.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM.D.YY").isValid() && (moment(dateString, "MMM.D.YY").format("MMM.D.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM.D.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM.D.YY").isValid() && (moment(dateString, "MMM.D.YY").format("MMM.D.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM.D.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM.DD.YY").isValid() && (moment(dateString, "MMM.DD.YY").format("MMM.DD.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM.DD.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM.D.YY").isValid() && (moment(dateString, "MMMM.D.YY").format("MMMM.D.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM.D.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM.DD.YY").isValid() && (moment(dateString, "MMMM.DD.YY").format("MMMM.DD.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM.DD.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YY.MM.DD").isValid() && (moment(dateString, "YY.MM.DD").format("YY.MM.DD").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YY.MM.DD")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MM.YY").isValid() && (moment(dateString, "DD.MM.YY").format("DD.MM.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MM.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MM.DD.YY").isValid() && (moment(dateString, "MM.DD.YY").format("MM.DD.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MM.DD.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "YY.DD.MM").isValid() && (moment(dateString, "YY.DD.MM").format("YY.DD.MM").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "YY.DD.MM")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MMMM.YY").isValid() && (moment(dateString, "DD.MMMM.YY").format("DD.MMMM.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MMMM.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MMM.YY").isValid() && (moment(dateString, "DD.MMM.YY").format("DD.MMM.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MMM.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "DD.MMM.YY").isValid() && (moment(dateString, "DD.MMM.YY").format("DD.MMM.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "DD.MMM.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM.D.YY").isValid() && (moment(dateString, "MMM.D.YY").format("MMM.D.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM.D.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM.D.YY").isValid() && (moment(dateString, "MMM.D.YY").format("MMM.D.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM.D.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMM.DD.YY").isValid() && (moment(dateString, "MMM.DD.YY").format("MMM.DD.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMM.DD.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM.D.YY").isValid() && (moment(dateString, "MMMM.D.YY").format("MMMM.D.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM.D.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else if (moment(dateString, "MMMM.DD.YY").isValid() && (moment(dateString, "MMMM.DD.YY").format("MMMM.DD.YY").toLowerCase() == dateString.toLowerCase())) {
-			var inputDate = moment(dateString, "MMMM.DD.YY")
-			dateInput.value = inputDate.format("DD-MM-YYYY");
-		} else {
-			alert("Invalid Date Format")
-		}
-	}
-</script>
-
-
-{% endblock body %}
+from django.shortcuts import render
+import aspose.words as aw
+from pathlib import Path
+import shutil
+from bs4 import BeautifulSoup
+
+# def 400(request):
+#     return render(request,"400.html")
+
+# def 403(request):
+#     return render(request,"403.html")
+
+# def 404(request):
+#     return render(request,"404.html")
+
+# def 500(request):
+#     return render(request,"500.html")
+
+# def 503(request):
+#     return render(request,"503.html")
+
+
+def advanced_components(request):
+    return render(request, "advanced-components.html")
+
+
+def apexcharts(request):
+    return render(request, "apexcharts.html")
+
+
+def apexcharts(request):
+    return render(request, "apexcharts.html")
+
+
+def basic_table(request):
+    return render(request, "basic-table.html")
+
+
+def blank(request):
+    return render(request, "blank.html")
+
+
+def blog(request):
+    return render(request, "blog.html")
+
+
+def blog_detail(request):
+    return render(request, "blog-detail.html")
+
+
+def bootstrap_icon(request):
+    return render(request, "bootstrap-icon.html")
+
+
+def calendar(request):
+    return render(request, "calendar.html")
+
+
+def chat(request):
+    return render(request, "chat.html")
+
+
+def color_settings(request):
+    return render(request, "color-settings.html")
+
+
+def contact_directory(request):
+    return render(request, "contact-directory.html")
+
+
+def custom_icon(request):
+    return render(request, "custom-icon.html")
+
+
+def datatable(request):
+    return render(request, "datatable.html")
+
+
+def faq(request):
+    return render(request, "faq.html")
+
+
+def font_awesome(request):
+    return render(request, "font-awesome.html")
+
+
+def forgot_password(request):
+    return render(request, "forgot-password.html")
+
+
+def reset_password(request):
+    return render(request, "reset-password.html")
+
+
+def form_basic(request):
+    return render(request, "form-basic.html")
+
+
+def form_pickers(request):
+    return render(request, "form-pickers.html")
+
+
+def form_wizard(request):
+    return render(request, "form-wizard.html")
+
+
+def foundation(request):
+    return render(request, "foundation.html")
+
+
+def gallery(request):
+    return render(request, "gallery.html")
+
+
+def getting_started(request):
+    return render(request, "getting-started.html")
+
+
+def highchart(request):
+    return render(request, "highchart.html")
+
+
+def html5_editor(request):
+    return render(request, "html5-editor.html")
+
+
+def image_cropper(request):
+    return render(request, "image-cropper.html")
+
+
+def image_dropzone(request):
+    return render(request, "image-dropzone.html")
+
+
+def index(request):
+    iframe = False
+    pdf = False
+    doc = False
+    docx = False
+    res_file = None
+    err = False
+    if request.method == "POST":
+        try:
+            shutil.rmtree("Template/static/Temp/HtmlFiles")
+        except Exception as e:
+            pass
+        res_file = request.FILES["file_input"]
+        if Path(str(res_file)).suffix == ".pdf":
+            file_content = res_file.read()
+            with open(
+                "Template/static/Temp/DocFiles/InputPdf.pdf", "wb"
+            ) as output_file:
+                output_file.write(file_content)
+            pdfdoc = aw.Document("Template/static/Temp/DocFiles/InputPdf.pdf")
+            pdfdoc.save("Template/static/Temp/HtmlFiles/PdfHtml.html")
+            with open(
+                "Template/static/Temp/HtmlFiles/PdfHtml.html",
+                "r",
+                encoding="utf-8",
+            ) as file:
+                html_content = file.read()
+            soup = BeautifulSoup(html_content, "html.parser")
+            head_tag = soup.head
+            if head_tag:
+                head_tag.extract()
+            div_remove1 = soup.find_all(
+                "div", style="-aw-headerfooter-type:header-primary; clear:both"
+            )
+            for div1 in div_remove1:
+                div1.extract()
+            p_tags_to_remove = soup.find_all(
+                "p", style="margin-top:0pt; margin-bottom:0pt"
+            )
+            for p_tag in p_tags_to_remove:
+                p_tag.extract()
+            with open(
+                "Template/static/Temp/HtmlFiles/PdfHtml.html",
+                "w",
+                encoding="utf-8",
+            ) as file:
+                file.write(str(soup))
+
+            iframe = True
+            pdf = True
+        elif Path(str(res_file)).suffix == ".doc":
+            file_content = res_file.read()
+            with open(
+                "Template/static/Temp/DocFiles/InputDoc.doc", "wb"
+            ) as output_file:
+                output_file.write(file_content)
+            docdoc = aw.Document("Template/static/Temp/DocFiles/InputDoc.doc")
+            docdoc.save("Template/static/Temp/HtmlFiles/DocHtml.html")
+            with open(
+                "Template/static/Temp/HtmlFiles/DocHtml.html",
+                "r",
+                encoding="utf-8",
+            ) as file:
+                html_content = file.read()
+            soup = BeautifulSoup(html_content, "html.parser")
+            head_tag = soup.head
+            if head_tag:
+                head_tag.extract()
+            div_remove1 = soup.find_all(
+                "div", style="-aw-headerfooter-type:header-primary; clear:both"
+            )
+            for div1 in div_remove1:
+                div1.extract()
+            p_tags_to_remove = soup.find_all(
+                "p", style="margin-top:0pt; margin-bottom:0pt; font-size:12pt"
+            )
+            for p_tag in p_tags_to_remove:
+                p_tag.extract()
+            with open(
+                "Template/static/Temp/HtmlFiles/DocHtml.html",
+                "w",
+                encoding="utf-8",
+            ) as file:
+                file.write(str(soup))
+            iframe = True
+            doc = True
+        elif Path(str(res_file)).suffix == ".docx":
+            file_content = res_file.read()
+            with open(
+                "Template/static/Temp/DocFiles/InputDocx.docx", "wb"
+            ) as output_file:
+                output_file.write(file_content)
+            docxdoc = aw.Document("Template/static/Temp/DocFiles/InputDocx.docx")
+            docxdoc.save("Template/static/Temp/HtmlFiles/DocxHtml.html")
+            with open(
+                "Template/static/Temp/HtmlFiles/DocxHtml.html",
+                "r",
+                encoding="utf-8",
+            ) as file:
+                html_content = file.read()
+            soup = BeautifulSoup(html_content, "html.parser")
+            head_tag = soup.head
+            if head_tag:
+                head_tag.extract()
+            div_remove1 = soup.find_all(
+                "div", style="-aw-headerfooter-type:header-primary; clear:both"
+            )
+            for div1 in div_remove1:
+                div1.extract()
+            p_tags_to_remove = soup.find_all(
+                "p", style="margin-top:0pt; margin-bottom:0pt; font-size:12pt"
+            )
+            for p_tag in p_tags_to_remove:
+                p_tag.extract()
+            with open(
+                "Template/static/Temp/HtmlFiles/DocxHtml.html",
+                "w",
+                encoding="utf-8",
+            ) as file:
+                file.write(str(soup))
+            iframe = True
+            docx = True
+        else:
+            err = True
+
+    return render(
+        request,
+        "index.html",
+        {
+            "iframe": iframe,
+            "pdf": pdf,
+            "doc": doc,
+            "docx": docx,
+            "name": str(res_file),
+            "err": err,
+        },
+    )
+
+
+def index2(request):
+    return render(request, "index2.html")
+
+
+def index3(request):
+    return render(request, "index3.html")
+
+
+def introduction(request):
+    return render(request, "introduction.html")
+
+
+def invoice(request):
+    return render(request, "invoice.html")
+
+
+def ionicons(request):
+    return render(request, "ionicons.html")
+
+
+def jvectormap(request):
+    return render(request, "jvectormap.html")
+
+
+def knob_chart(request):
+    return render(request, "knob-chart.html")
+
+
+def login(request):
+    return render(request, "login.html")
+
+
+def pricing_table(request):
+    return render(request, "pricing-table.html")
+
+
+def product_detail(request):
+    return render(request, "product-detail.html")
+
+
+def product(request):
+    return render(request, "product.html")
+
+
+def profile(request):
+    return render(request, "profile.html")
+
+
+def register(request):
+    return render(request, "register.html")
+
+
+def sitemap(request):
+    return render(request, "sitemap.html")
+
+
+def themify(request):
+    return render(request, "themify.html")
+
+
+def third_party_plugins(request):
+    return render(request, "third-party-plugins.html")
+
+
+def ui_buttons(request):
+    return render(request, "ui-buttons.html")
+
+
+def ui_cards_hover(request):
+    return render(request, "ui-cards-hover.html")
+
+
+def ui_cards(request):
+    return render(request, "ui-cards.html")
+
+
+def ui_carousel(request):
+    return render(request, "ui-carousel.html")
+
+
+def ui_list_group(request):
+    return render(request, "ui-list-group.html")
+
+
+def ui_modals(request):
+    return render(request, "ui-modals.html")
+
+
+def ui_notification(request):
+    return render(request, "ui-notification.html")
+
+
+def ui_progressbar(request):
+    return render(request, "ui-progressbar.html")
+
+
+def ui_range_slider(request):
+    return render(request, "ui-range-slider.html")
+
+
+def ui_sweet_alert(request):
+    return render(request, "ui-sweet-alert.html")
+
+
+def ui_tabs(request):
+    return render(request, "ui-tabs.html")
+
+
+def ui_timeline(request):
+    return render(request, "ui-timeline.html")
+
+
+def ui_tooltip_popover(request):
+    return render(request, "ui-tooltip-popover.html")
+
+
+def ui_typography(request):
+    return render(request, "ui-typography.html")
+
+
+def ui_videoplayer(request):
+    return render(request, "video-player.html")
